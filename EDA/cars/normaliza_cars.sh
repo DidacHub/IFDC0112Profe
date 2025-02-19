@@ -126,7 +126,8 @@ echo "Recodificando condades en ciudades"
 # elabora la tabla de Códigos postales  y ciudades
 echo "#!/usr/bin/bash" > cars_cities.sh 
 # tail -n+2 cars04.csv | cut -d\; -f3,5 --output-delimiter=","|sort|uniq|nl -s',' -w1 > cars_postal_codes.csv  No numero las lineas. la PK será e codigoportal
-tail -n+2 cars04.csv | cut -d\; -f5,3 --output-delimiter=","|sort|uniq > cars_postal_codes.csv  
+# tail -n+2 cars04.csv | cut -d\; -f5,3 --output-delimiter=","|sort|uniq > cars_postal_codes.csv  # cuidado que es una relacion muchos a muchos No 
+tail -n+2 cars04.csv | cut -d\; -f5,3 --output-delimiter=","|sort|uniq|sort -d"," -k2 > cars_postal_codes.csv  # cuidado que es una relacion muchos a muchos. Se ve al ordenar por codigo.
 #Para cada ciudad crea una línea de recodificación en postal_codes
 awk -F',' '{printf "sed -i -e #s/%s/%s/# cars_postal_codes.csv \n", $3, $1}' cars_cities.csv | tr '#' "'" >> cars_cities.sh  
 # Insertamos las cabeceras de la tabla cities.
